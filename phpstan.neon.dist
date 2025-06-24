@@ -1,0 +1,5 @@
+parameters:
+    level: 8 # Start with a lower level (e.g., 5 or 6) and increase gradually. Level 8 is strictest.
+    paths:
+        - src
+        - tests

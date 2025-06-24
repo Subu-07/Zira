@@ -1,0 +1,92 @@
+name: CI/CD Pipeline
+
+on:
+  push:
+    branches:
+      - main # Your primary branch
+      - develop # Your development branch
+    tags:
+      - 'v*.*.*' # Trigger for semantic version tags like v0.1.0
+  pull_request:
+    branches:
+      - main
+      - develop
+
+jobs:
+  build-and-test:
+    runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        php-version: ['8.1', '8.2', '8.3'] # Test against multiple PHP versions
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Setup PHP ${{ matrix.php-version }}
+        uses: shivammathur/setup-php@v2
+        with:
+          php-version: ${{ matrix.php-version }}
+          extensions: gd, intl, pdo_mysql # Add any required PHP extensions
+          ini-values: post_max_size=256M, upload_max_filesize=256M # Optional PHP INI settings
+          coverage: xdebug # Use xdebug or pcov for code coverage reporting
+
+      - name: Validate Composer files
+        run: composer validate --strict
+
+      - name: Cache Composer dependencies
+        id: composer-cache
+        uses: actions/cache@v4
+        with:
+          path: vendor
+          key: ${{ runner.os }}-php-${{ matrix.php-version }}-${{ hashFiles('**/composer.lock') }}
+          restore-keys: |
+            ${{ runner.os }}-php-${{ matrix.php-version }}-
+
+      - name: Composer Install
+        run: composer install --prefer-dist --no-progress --no-interaction
+
+      - name: Run PHPUnit
+        run: vendor/bin/phpunit --coverage-clover coverage.xml
+        # Store coverage artifacts for later use if needed (e.g., for Code Climate)
+        # - name: Upload coverage report
+        #   uses: actions/upload-artifact@v4
+        #   with:
+        #     name: phpunit-coverage
+        #     path: coverage.xml
+
+      - name: Run PHPStan
+        run: vendor/bin/phpstan analyse --memory-limit=1G --configuration=phpstan.neon.dist
+
+      - name: Run Psalm
+        run: vendor/bin/psalm --show-info=true --config=psalm.xml
+
+      - name: Run PHP-CS-Fixer (Dry Run)
+        run: vendor/bin/php-cs-fixer fix --dry-run --diff --verbose
+
+  publish-to-packagist:
+    # Only run this job if the previous build-and-test job passed AND it's a tag push
+    if: success() && startsWith(github.ref, 'refs/tags/v')
+    needs: build-and-test # Ensure tests and analysis pass before attempting to publish
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Publish to Packagist (Automated via GitHub Hook)
+        run: |
+          echo "Tag pushed: ${{ github.ref }}"
+          echo "Packagist will automatically pull updates if linked via GitHub hooks."
+          echo "Ensure your repository is linked on Packagist.org and 'Update on push' is enabled."
+        # For most public packages, simply pushing a tag to GitHub is enough if Packagist is configured.
+        # If you have a private packagist or need explicit triggering:
+        # - name: Publish to Private Packagist (Example - Requires API Token)
+        #   env:
+        #     PACKAGIST_TOKEN: ${{ secrets.PACKAGIST_TOKEN }}
+        #   run: |
+        #     # This command might vary based on your private packagist solution
+        #     # For example, if using Satis/Private Packagist with a proffer command:
+        #     # composer global config http-basic.packagist.org token "$PACKAGIST_TOKEN"
+        #     # composer proffer # Or your specific publish command
+        #     echo "Skipping explicit publish command for public Packagist via GitHub hook."
