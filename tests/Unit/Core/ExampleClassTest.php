@@ -2,10 +2,10 @@
 
 declare(strict_types=1);
 
-namespace Subhash\ZiraPhp\Tests\Unit\Core; // Adjust namespace
+namespace Subhash\Zira\Tests\Unit\Core; // Adjust namespace
 
 use PHPUnit\Framework\TestCase;
-use Subhash\ZiraPhp\Core\ExampleClass; // Adjust namespace
+use Subhash\Zira\Core\ExampleClass; // Adjust namespace
 
 class ExampleClassTest extends TestCase
 {

@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace Subhash\ZiraPhp\Core; // Adjust namespace to your project
+namespace Subhash\Zira\Core; // Adjust namespace to your project
 
 class ExampleClass
 {
