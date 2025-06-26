@@ -1,15 +1,16 @@
 {
-  "name": "subhash/zira-php",
+  "name": "subhash/zira",
+  "description": "A minimal and flexible PHP framework.",
   "type": "library",
   "license": "MIT",
   "autoload": {
     "psr-4": {
-      "Subhash\\ZiraPhp\\": "src/"
+      "Subhash\\Zira\\": "src/"
     }
   },
   "autoload-dev": {
     "psr-4": {
-      "Subhash\\ZiraPhp\\Tests\\": "tests/"
+      "Subhash\\Zira\\Tests\\": "tests/"
     }
   },
   "authors": [
