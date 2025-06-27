@@ -6,7 +6,7 @@ on:
       - main # Your primary branch
       - develop # Your development branch
     tags:
-      - 'v*.*.*' # Trigger for semantic version tags like v0.1.0
+      - "v*.*.*" # Trigger for semantic version tags like v0.1.0
   pull_request:
     branches:
       - main
@@ -17,7 +17,7 @@ jobs:
     runs-on: ubuntu-latest
     strategy:
       matrix:
-        php-version: ['8.1', '8.2', '8.3'] # Test against multiple PHP versions
+        php-version: ["8.4"] # Test against multiple PHP versions
 
     steps:
       - name: Checkout code
