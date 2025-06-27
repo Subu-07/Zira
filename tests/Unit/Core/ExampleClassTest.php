@@ -12,7 +12,7 @@ class ExampleClassTest extends TestCase
     public function testGreetMethodReturnsCorrectString(): void
     {
         $example = new ExampleClass();
-        $this->assertEquals("Hello, World!", $example->greet("World"));
+        $this->assertEquals("Hello, World! Subhash", $example->greet("World"));
     }
 
     public function testAddMethodAddsNumbersCorrectly(): void
