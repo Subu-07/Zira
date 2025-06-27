@@ -27,7 +27,7 @@ jobs:
         uses: shivammathur/setup-php@v2
         with:
           php-version: ${{ matrix.php-version }}
-          extensions: gd, intl, pdo_mysql # Add any required PHP extensions
+          extensions: gd, intl, pdo_mysql, zip, openssl, curl, dom, json, libxml, mbstring, tokenizer, xml, xmlwriter  # Add any required PHP extensions
           ini-values: post_max_size=256M, upload_max_filesize=256M # Optional PHP INI settings
           coverage: xdebug # Use xdebug or pcov for code coverage reporting
 
