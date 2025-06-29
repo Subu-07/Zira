@@ -6,7 +6,7 @@ on:
       - main # Your primary branch
       - develop # Your development branch
     tags:
-      - 'v*.*.*' # Trigger for semantic version tags like v0.1.0
+      - "v*.*.*" # Trigger for semantic version tags like v0.1.0
   pull_request:
     branches:
       - main
@@ -17,7 +17,7 @@ jobs:
     runs-on: ubuntu-latest
     strategy:
       matrix:
-        php-version: ['8.1', '8.2', '8.3'] # Test against multiple PHP versions
+        php-version: ["8.4"] # Test against multiple PHP versions
 
     steps:
       - name: Checkout code
@@ -27,7 +27,7 @@ jobs:
         uses: shivammathur/setup-php@v2
         with:
           php-version: ${{ matrix.php-version }}
-          extensions: gd, intl, pdo_mysql # Add any required PHP extensions
+          extensions: gd, intl, pdo_mysql, zip, openssl, curl, dom, json, libxml, mbstring, tokenizer, xml, xmlwriter  # Add any required PHP extensions
           ini-values: post_max_size=256M, upload_max_filesize=256M # Optional PHP INI settings
           coverage: xdebug # Use xdebug or pcov for code coverage reporting
 

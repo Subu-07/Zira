@@ -1,0 +1,38 @@
+name: Deploy Docusaurus Docs
+
+on:
+  push:
+    branches:
+      - main # Or the branch your docs source is on
+
+jobs:
+  deploy:
+    name: Deploy to GitHub Pages
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+        with:
+          persist-credentials: false # Important for GitHub Pages deployment
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: 20 # Use a stable Node.js version
+          cache: yarn # or npm
+
+      - name: Install dependencies
+        run: yarn install --immutable # or npm ci
+        working-directory: docs # Run from the docs subdirectory
+
+      - name: Build Docusaurus website
+        run: yarn build # or npm run build
+        working-directory: docs
+
+      - name: Deploy to GitHub Pages
+        uses: peaceiris/actions-gh-pages@v3
+        with:
+          github_token: ${{ secrets.GITHUB_TOKEN }}
+          publish_dir: ./docs/build # This is where Docusaurus builds the static site
+          # Add if you are using a custom domain:
+          # cname: example.com
