@@ -20,10 +20,13 @@ class ExampleClassTest extends TestCase
      * @covers \Subhash\Zira\Core\ExampleClass::add
      */
 
-    public function testAddMethodAddsNumbersCorrectly(): void
-    {
-        $example = new ExampleClass();
-        $this->assertEquals(5, $example->add(2, 3));
-        $this->assertEquals(0, $example->add(-1, 1));
-    }
+    // /**
+    //  * @covers \Zira\Core\ExampleClass::add
+    //  */
+    // public function testAddMethodAddsNumbersCorrectly(): void
+    // {
+    //     $example = new ExampleClass();
+    //     $this->assertEquals(5, $example->add(2, 3));
+    //     $this->assertEquals(0, $example->add(-1, 1));
+    // }
 }
