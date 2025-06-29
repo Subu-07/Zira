@@ -48,7 +48,7 @@ jobs:
 
       - name: Run PHPUnit
         run: vendor/bin/phpunit --coverage-clover coverage.xml
-        working-directory: ../ # <--- ADD THIS LINE HERE
+        working-directory: ./ # <--- ADD THIS LINE HERE
         # Store coverage artifacts for later use if needed (e.g., for Code Climate)
         # - name: Upload coverage report
         #   uses: actions/upload-artifact@v4
@@ -58,15 +58,15 @@ jobs:
 
       - name: Run PHPStan
         run: vendor/bin/phpstan analyse --memory-limit=1G --configuration=phpstan.neon.dist
-        working-directory: ../ # It's good practice to add this here too for consistency
+        working-directory: ./ # It's good practice to add this here too for consistency
 
       - name: Run Psalm
         run: vendor/bin/psalm --show-info=true --config=psalm.xml
-        working-directory: ../ # And here
+        working-directory: ./ # And here
 
       - name: Run PHP-CS-Fixer (Dry Run)
         run: vendor/bin/php-cs-fixer fix --dry-run --diff --verbose
-        working-directory: ../ # And here
+        working-directory: ./ # And here
         # Note: You might want to remove --dry-run to actually fix files and then add a git diff check
 
   publish-to-packagist:
