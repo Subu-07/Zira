@@ -17,7 +17,10 @@ jobs:
     runs-on: ubuntu-latest
     strategy:
       matrix:
-        php-version: ['8.3'] # Test against multiple PHP versions
+        # Changed PHP version to 8.3 as it's typically more stable for current tools
+        # If you specifically need 8.4 (which is still in alpha/beta), keep it,
+        # but 8.3 is a safer bet for CI stability right now.
+        php-version: ['8.3']
 
     steps:
       - name: Checkout code
@@ -27,8 +30,9 @@ jobs:
         uses: shivammathur/setup-php@v2
         with:
           php-version: ${{ matrix.php-version }}
-          extensions: gd, intl, pdo_mysql, zip, openssl, curl, dom, json, libxml, mbstring, tokenizer, xml, xmlwriter # Add any required PHP extensions
-          ini-values: post_max_size=256M, upload_max_filesize=256M # Optional PHP INI settings
+          # All required extensions for PHPUnit and your other tools
+          extensions: gd, intl, pdo_mysql, zip, openssl, curl, dom, json, libxml, mbstring, tokenizer, xml, xmlwriter
+          ini-values: post_max_size=256M, upload_max_filesize=256M
           coverage: xdebug # Use xdebug or pcov for code coverage reporting
 
       - name: Validate Composer files
@@ -41,38 +45,44 @@ jobs:
           path: vendor
           key: ${{ runner.os }}-php-${{ matrix.php-version }}-${{ hashFiles('**/composer.lock') }}
           restore-keys: |
-            ${{ runner.os }}-php-${{ matrix.php-version }}-
+             ${{ runner.os }}-php-${{ matrix.php-version }}-
 
       - name: Composer Install
         run: composer install --prefer-dist --no-progress --no-interaction
 
-      - name: Run PHPUnit
-        run: vendor/bin/phpunit --coverage-clover coverage.xml
-        working-directory: ./ # <--- ADD THIS LINE HERE
-        # Store coverage artifacts for later use if needed (e.g., for Code Climate)
-        # - name: Upload coverage report
-        #   uses: actions/upload-artifact@v4
-        #   with:
-        #     name: phpunit-coverage
-        #     path: coverage.xml
+      # This step now includes debugging commands to help diagnose the persistent "Test directory not found" error
+      - name: Run PHPUnit with Debug Info
+        run: |
+          echo "--- Debugging PHPUnit Environment ---"
+          echo "Current working directory (pwd):"
+          pwd
+          echo "Contents of current directory (ls -la):"
+          ls -la
+          echo "Contents of 'tests' directory (ls -la tests/):"
+          ls -la tests/
+          echo "Contents of 'tests/Integration' directory (ls -la tests/Integration/):"
+          ls -la tests/Integration/ # Added this for more specific check
+          echo "Contents of 'vendor/bin' directory (ls -la vendor/bin/):"
+          ls -la vendor/bin/
+          echo "--- Attempting to run PHPUnit ---"
+          vendor/bin/phpunit --coverage-clover coverage.xml
+        working-directory: ./ # This is crucial and correctly placed
 
       - name: Run PHPStan
         run: vendor/bin/phpstan analyse --memory-limit=1G --configuration=phpstan.neon.dist
-        working-directory: ./ # It's good practice to add this here too for consistency
+        working-directory: ./
 
       - name: Run Psalm
         run: vendor/bin/psalm --show-info=true --config=psalm.xml
-        working-directory: ./ # And here
+        working-directory: ./
 
       - name: Run PHP-CS-Fixer (Dry Run)
         run: vendor/bin/php-cs-fixer fix --dry-run --diff --verbose
-        working-directory: ./ # And here
-        # Note: You might want to remove --dry-run to actually fix files and then add a git diff check
+        working-directory: ./
 
   publish-to-packagist:
-    # Only run this job if the previous build-and-test job passed AND it's a tag push
     if: success() && startsWith(github.ref, 'refs/tags/v')
-    needs: build-and-test # Ensure tests and analysis pass before attempting to publish
+    needs: build-and-test
     runs-on: ubuntu-latest
 
     steps:
@@ -84,14 +94,3 @@ jobs:
           echo "Tag pushed: ${{ github.ref }}"
           echo "Packagist will automatically pull updates if linked via GitHub hooks."
           echo "Ensure your repository is linked on Packagist.org and 'Update on push' is enabled."
-        # For most public packages, simply pushing a tag to GitHub is enough if Packagist is configured.
-        # If you have a private packagist or need explicit triggering:
-        # - name: Publish to Private Packagist (Example - Requires API Token)
-        #   env:
-        #     PACKAGIST_TOKEN: ${{ secrets.PACKAGIST_TOKEN }}
-        #   run: |
-        #     # This command might vary based on your private packagist solution
-        #     # For example, if using Satis/Private Packagist with a proffer command:
-        #     # composer global config http-basic.packagist.org token "$PACKAGIST_TOKEN"
-        #     # composer proffer # Or your specific publish command
-        #     echo "Skipping explicit publish command for public Packagist via GitHub hook."
