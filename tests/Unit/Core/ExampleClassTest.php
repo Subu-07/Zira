@@ -2,10 +2,10 @@
 
 declare(strict_types=1);
 
-namespace Subhash\Zira\Tests\Unit\Core; // Adjust namespace
+namespace Zira\Tests\Unit\Core; // Adjust namespace
 
 use PHPUnit\Framework\TestCase;
-use Subhash\Zira\Core\ExampleClass; // Adjust namespace
+use Zira\Core\ExampleClass; // Adjust namespace
 
 class ExampleClassTest extends TestCase
 {
@@ -14,6 +14,11 @@ class ExampleClassTest extends TestCase
         $example = new ExampleClass();
         $this->assertEquals("Hello, World! Subhash", $example->greet("World"));
     }
+
+
+    /**
+     * @covers \Subhash\Zira\Core\ExampleClass::add
+     */
 
     public function testAddMethodAddsNumbersCorrectly(): void
     {

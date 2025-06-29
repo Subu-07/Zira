@@ -5,12 +5,12 @@
   "license": "MIT",
   "autoload": {
     "psr-4": {
-      "Subhash\\Zira\\": "src/"
+      "Zira\\": "src/"
     }
   },
   "autoload-dev": {
     "psr-4": {
-      "Subhash\\Zira\\Tests\\": "tests/"
+      "Zira\\Tests\\": "tests/"
     }
   },
   "authors": [
