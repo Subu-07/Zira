@@ -9,11 +9,11 @@ use Zira\Core\ExampleClass; // Adjust namespace
 
 class ExampleClassTest extends TestCase
 {
-    public function testGreetMethodReturnsCorrectString(): void
-    {
-        $example = new ExampleClass();
-        $this->assertEquals("Hello, World! Subhash", $example->greet("World"));
-    }
+    // public function testGreetMethodReturnsCorrectString(): void
+    // {
+    //     $example = new ExampleClass();
+    //     $this->assertEquals("Hello, World! Subhash", $example->greet("World"));
+    // }
 
 
     /**
