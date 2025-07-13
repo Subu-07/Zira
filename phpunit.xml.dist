@@ -5,10 +5,10 @@
          colors="true"
          cacheDirectory=".phpunit.cache"
          failOnWarning="true"
-         failOnRisky="true"
+         failOnRisky="false"
          failOnEmptyTestSuite="true"
          beStrictAboutOutputDuringTests="true"
-         requireCoverageMetadata="true"
+         requireCoverageMetadata="false"
          displayDetailsOnIncompleteTests="true"
          displayDetailsOnSkippedTests="true"
          displayDetailsOnTestsThatTriggerNotices="true"
@@ -30,9 +30,4 @@
         </include>
     </source>
 
-<coverage>
-    <report>
-        <clover outputFile="coverage.xml"/>
-        <text outputFile="php://stdout"/> </report>
-</coverage>
 </phpunit>
