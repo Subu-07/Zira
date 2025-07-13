@@ -10,10 +10,11 @@ use Zira\Core\ExampleClass;
 /**
  * @covers \Zira\Core\ExampleClass
  */
-class ExampleClassTest extends TestCase
+final class ExampleClassTest extends TestCase
 {
     private ExampleClass $exampleClass;
 
+    #[\Override]
     protected function setUp(): void
     {
         $this->exampleClass = new ExampleClass();
