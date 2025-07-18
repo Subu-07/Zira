@@ -4,13 +4,13 @@ on:
   push:
     branches:
       - main # Your primary branch
-      - develop # Your development branch
+      # - develop # Your development branch
     tags:
       - "v*.*.*" # Trigger for semantic version tags like v0.1.0
   pull_request:
     branches:
       - main
-      - develop
+      # - develop
 
 jobs:
   build-and-test:
