@@ -1,7 +1,7 @@
 <?php
 
 $finder = PhpCsFixer\Finder::create()
-    ->in(__DIR__ . '/src')
+    ->in(__DIR__ . '/src') 
     ->in(__DIR__ . '/tests')
     ->exclude('var') // Exclude cache/log directories if they exist
 ;
@@ -20,7 +20,6 @@ return (new PhpCsFixer\Config())
         'blank_line_before_statement' => [
             'statements' => ['return', 'if', 'for', 'foreach', 'while', 'switch', 'try'],
         ],
-        'phpdoc_separation_property_from_description' => true,
     ])
     ->setFinder($finder)
     ->setCacheFile(__DIR__.'/.php-cs-fixer.cache'); // Cache for faster runs

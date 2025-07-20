@@ -2,31 +2,66 @@
 
 declare(strict_types=1);
 
-namespace Zira\Tests\Unit\Core; // Adjust namespace
+namespace Tests\Unit\Core;
 
 use PHPUnit\Framework\TestCase;
-use Zira\Core\ExampleClass; // Adjust namespace
+use Zira\Core\ExampleClass;
 
-class ExampleClassTest extends TestCase
+/**
+ * @covers \Zira\Core\ExampleClass
+ */
+final class ExampleClassTest extends TestCase
 {
-    // public function testGreetMethodReturnsCorrectString(): void
-    // {
-    //     $example = new ExampleClass();
-    //     $this->assertEquals("Hello, World! Subhash", $example->greet("World"));
-    // }
+    private ExampleClass $exampleClass;
 
+    #[\Override]
+    protected function setUp(): void
+    {
+        $this->exampleClass = new ExampleClass();
+    }
 
     /**
-     * @covers \Subhash\Zira\Core\ExampleClass::add
+     * @covers \Zira\Core\ExampleClass::greet
      */
+    public function testGreetReturnsCorrectGreeting(): void
+    {
+        $result = $this->exampleClass->greet('World');
+        $this->assertEquals('Hello, World!', $result);
+    }
 
-    // /**
-    //  * @covers \Zira\Core\ExampleClass::add
-    //  */
-    // public function testAddMethodAddsNumbersCorrectly(): void
-    // {
-    //     $example = new ExampleClass();
-    //     $this->assertEquals(5, $example->add(2, 3));
-    //     $this->assertEquals(0, $example->add(-1, 1));
-    // }
+    /**
+     * @covers \Zira\Core\ExampleClass::greet
+     */
+    public function testGreetWithEmptyString(): void
+    {
+        $result = $this->exampleClass->greet('');
+        $this->assertEquals('Hello, !', $result);
+    }
+
+    /**
+     * @covers \Zira\Core\ExampleClass::add
+     */
+    public function testAddReturnsCorrectSum(): void
+    {
+        $result = $this->exampleClass->add(2, 3);
+        $this->assertEquals(5, $result);
+    }
+
+    /**
+     * @covers \Zira\Core\ExampleClass::add
+     */
+    public function testAddWithNegativeNumbers(): void
+    {
+        $result = $this->exampleClass->add(-2, 3);
+        $this->assertEquals(1, $result);
+    }
+
+    /**
+     * @covers \Zira\Core\ExampleClass::add
+     */
+    public function testAddWithZero(): void
+    {
+        $result = $this->exampleClass->add(0, 5);
+        $this->assertEquals(5, $result);
+    }
 }

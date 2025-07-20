@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace Zira\Core; // Adjust namespace to your project
 
-class ExampleClass
+final class ExampleClass
 {
     public function greet(string $name): string
     {
