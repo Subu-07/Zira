@@ -1,5 +1,5 @@
 
-<p align="center"><a href="https://laravel.com" target="_blank"><img src="https://cdn.jsdelivr.net/gh/Subu-07/zira/assets/zira_logo.png" width="400" alt="Zira Logo"></a></p>
+<p align="center"><a href="https://github.com/Subu-07/Zira" target="_blank"><img src="https://cdn.jsdelivr.net/gh/Subu-07/zira/assets/zira_logo.png" width="400" alt="Zira Logo"></a></p>
 <p align="center"><a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/l/laravel/framework" alt="License"></a>
 </p>
 
